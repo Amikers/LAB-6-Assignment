@@ -1,0 +1,64 @@
+import socket
+
+
+ClientSocket = socket.socket()
+host = '192.168.56.107'
+port = 8889
+
+print('[+] Waiting for connection from server.....')
+try:
+	ClientSocket.connect((host, port))
+except socket.error as e:
+	print(str(e))
+
+Response =ClientSocket.recv(1024)
+print(Response)
+
+print(r"""
+-----------------------------------------
+   ONLINE CALCULATOR BY AMIKERS 2021
+   __________Client Edition_________
+-----------------------------------------
+1. log
+2. sqrt
+3. exp 
+4. sin
+5. cos
+6. tan
+               """)
+
+while True:
+
+	status = 0
+	while(status == 0):
+		option = input('[+] Enter type of operation : ')
+		if(option == 'log'):
+			value1 = input("[+] Enter the value: ")
+			status = 1
+		elif(option == 'sqrt'):
+			value1 = input("[+] Enter the value: ")
+			status = 1
+		elif(option == 'exp'):
+			value1 = input("[+] Enter the value: ")
+			status = 1
+		elif(option == 'sin'):
+			value1 = input("[+] Enter the value: ")
+			status = 1
+		elif(option == 'cos'):
+			value1 = input("[+] Enter the value: ")
+			status = 1
+		elif(option == 'tan'):
+			value1 = input("[+] Enter the value: ")
+			status = 1
+		else:
+			print("[+] Invalid operation, please input new operation....")
+			status = 0
+
+
+	Input = option + " " +  value1
+	ClientSocket.send(str.encode(Input))
+	Response = ClientSocket.recv(1024)
+	print(Response.decode('utf-8'))
+	print("\n")
+
+ClientSocket.close()
