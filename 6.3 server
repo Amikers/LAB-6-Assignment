@@ -123,6 +123,7 @@ if __name__ == '__main__':
 		while True:
 			try:
 				s_sock, s_addr = s.accept()
+				print("[+] Got The Input From: " + str(s_addr))
 				p = Process(target = process_start, args = (s_sock,))
 				p.start()
 
