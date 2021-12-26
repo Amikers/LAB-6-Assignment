@@ -1,137 +1,131 @@
-import socket
 import sys
-import time
 import errno
+import socket
 import math
+import time
 from multiprocessing import Process
-
 
 print(r"""
 -----------------------------------------
-   ONLINE CALCULATOR BY AMIKERS 2021
-   __________Server Edition_________
+-   ONLINE CALCULATOR BY AMIKERS 2021   -
+-   __________Server Edition_________   -
 -----------------------------------------
                """)
 
-def calcLog(x):
-	print(f"[+] Calculating log({x})")
+def findLog(x):
+	print(f"[*] Calculating log({x})")
 	x = int(x)
 	try:
-		answer = math.log(x)
+		ans = math.log(x)
 	except:
-		answer = "Error in calculated. Please retry again..."
+		ans = "Error !!!!. Please retry again..."
 
-	return answer
+	return ans
 
-def calcSqrt(x):
-	print(f"[+] Calculating square root of {x}")
+def findSqrt(x):
+	print(f"[*] Calculating square root of {x}")
 	x = int(x)
 	if(x >= 0):
 		try:
-			answer = math.sqrt(x)
+			ans = math.sqrt(x)
 		except:
-			answer = "Error in calculated. Please retry again..."
+			ans = "Error !!!!. Please retry again..."
 	else:
-		answer = "unable to be calculated because it is a negative value."
+		ans = "unable to be calculated because it is a negative value."
 
-	return answer
+	return ans
 
-def calcExp(x):
-	print(f"[+] Calculating exponential of {x}")
+def findExp(x):
+	print(f"[*] Calculating exponential of {x}")
 	x = float(x)
 	try:
-		answer = math.exp(x)
+		ans = math.exp(x)
 	except:
-		answer = "Error in calculated. Please retry again..."
+		ans = "Error !!!!. Please retry again..."
 
-	return answer
+	return ans
 	
-def calcSin(x):
-	print(f"[+] Calculating Sin({x})")
+def findSin(x):
+	print(f"[*] Calculating Sin({x})")
 	x = int(x)
 	try:
-		answer = math.sin(x)
+		ans = math.sin(x)
 	except:
-		answer = "Error in calculated. Please retry again..."
+		ans = "Error !!!!. Please retry again..."
 
-	return answer	
+	return ans	
 	
-def calcCos(x):
-	print(f"[+] Calculating Cos({x})")
+def findCos(x):
+	print(f"[*] Calculating Cos({x})")
 	x = int(x)
 	try:
-		answer = math.cos(x)
+		ans = math.cos(x)
 	except:
-		answer = "Error in calculated. Please retry again..."
+		ans = "Error !!!!. Please retry again..."
 
-	return answer	
+	return ans	
 
-def calcTan(x):
-	print(f"[+] Calculating Tan({x})")
+def findTan(x):
+	print(f"[*] Calculating Tan({x})")
 	x = int(x)
 	try:
-		answer = math.tan(x)
+		ans = math.tan(x)
 	except:
-		answer = "Error in calculated. Please retry again..."
+		ans = "Error !!!!. Please retry again..."
 
-	return answer	
+	return ans	
 	
 def process_start(s_sock):
-	s_sock.send(str.encode('[+] Welcome to the Calculator Server\n'))
+	s_sock.send(str.encode("[*] Get connection from Server [*]\n"))
 	while True:
 		data = s_sock.recv(2048)
-		#print(data)
+		
 		data = data.decode('utf-8')
 		try:
 			option, value1 = data.split(" ", 2)
 		except:
-			print("[+] Calculation Error, client disconnected\n")
-		#print(option, value1, value2)
-		#data = data.decode('utf-8')
-		#print(data)
+			print("[*] Calculation Error, client disconnected [*]\n")
+		
 		if not data:
 			break
-		#if(data == 'a'):
-		#	print("Hello World")
 
 		if(option == 'log'):
-			answer = calcLog(value1)
+			ans = findLog(value1)
 		elif(option == 'sqrt'):
-			answer = calcSqrt(value1)
+			ans = findSqrt(value1)
 		elif(option == 'exp'):
-			answer = calcExp(value1)
+			ans = findExp(value1)
 		elif(option == 'sin'):
-			answer = calcSin(value1)
+			ans = findSin(value1)
 		elif(option == 'cos'):
-			answer = calcCos(value1)
+			ans = findCos(value1)
 		elif(option == 'tan'):
-			answer = calcTan(value1)	
+			ans = findTan(value1)	
 
-		message = "[+] The answer is  %s." % str(answer)
-		print("[+] Calculation Completed\n------------------------------------\n")
+		message = "[*] Answer is  %s." % str(ans)
+		print("[*] Calculation Completed [*]\n------------------------------------\n")
 		s_sock.sendall(str.encode(message))
 
-		#s_sock.sendall(str.encode(ok_message))
 	s_sock.close()
 
 if __name__ == '__main__':
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	s.bind(("", 8889))
-	print("[+] Listening for input from clients...")
+	print("[*] Listening for input from clients... [*]")
 	s.listen(3)
 	try:
 		while True:
 			try:
 				s_sock, s_addr = s.accept()
-				print("[+] Got The Input From: " + str(s_addr))
+				print("[*] Got The Input From: [*]" + str(s_addr))
 				p = Process(target = process_start, args = (s_sock,))
 				p.start()
 
 			except socket.error:
-				print('[+] Got a socket error')
+				print('[*] Sorry socket error [*]')
 
 	except Exception as e:
-		print('[+] An exception occured!')
+		print('[*] An exception occured! [*]')
 		print(e) 
 		sys.exit(1)
 
